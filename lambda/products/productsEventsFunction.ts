@@ -25,7 +25,7 @@ export async function handler(event: ProductEvent, context: Context, callback: C
 
 function createEvent(event: ProductEvent) {
     const timestamp = Date.now()
-    const ttl = ~~(timestamp / 1000 + 5 + 60) // 5 minutos à frente
+    const ttl = ~~(timestamp / 1000) + 5 * 60 // 5 minutes ahead
 
     return ddbClient.put({
         TableName: eventsDdb,

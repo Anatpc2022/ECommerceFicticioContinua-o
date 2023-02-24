@@ -1,5 +1,4 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { Context } from "vm";
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { ProductRepository } from "/opt/nodejs/productsLayer";
 import { DynamoDB } from "aws-sdk";
 import * as AWSRay from "aws-xray-sdk";
