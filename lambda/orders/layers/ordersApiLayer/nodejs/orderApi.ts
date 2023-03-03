@@ -1,6 +1,3 @@
-import { Order } from "/opt/nodejs/ordersLayer"
-import { Product } from "/opt/nodejs/productsLayer"
-
 export enum PaymentType {
     CASH = "CASH",
     DEBIT_CARD = "DEBIT_CARD",

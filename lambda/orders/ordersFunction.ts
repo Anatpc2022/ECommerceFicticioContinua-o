@@ -1,11 +1,9 @@
 import { DynamoDB } from "aws-sdk"
 import { Order, OrderRepository } from "/opt/nodejs/ordersLayer"
 import { Product, ProductRepository } from "/opt/nodejs/productsLayer"
-import * as AWSXRay from "aws-xray-sdk"
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda"
-import { CarrierType, OrderProductResponse, OrderRequest, OrderResponse, PaymentType, ShippingType } from "./layers/ordersApiLayer/nodejs/orderApi"
-
-AWSXRay.captureAWS(require("aws-cdk"))
+import { CarrierType, OrderProductResponse, OrderRequest, OrderResponse, 
+         PaymentType, ShippingType } from "./layers/ordersApiLayer/nodejs/orderApi"
 
 const orderDdb = process.env.ORDERS_DDB!
 const productDdb = process.env.PRODUCTS_DDB!

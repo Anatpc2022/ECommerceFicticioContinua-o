@@ -6,7 +6,7 @@ import * as ssm from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 
 interface OrdersAppStackProps extends cdk.StackProps {
-    productDdb: dynamodb.Table
+    productsDdb: dynamodb.Table
 }
 
 export class OrdersAppStack extends cdk.Stack {
@@ -15,7 +15,7 @@ export class OrdersAppStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: OrdersAppStackProps) {
         super(scope, id, props)
 
-        const ordersDdb = new dynamodb.Table(this, "OrderDdb", {
+        const ordersDdb = new dynamodb.Table(this, "OrdersDdb", {
             tableName: "orders",
             partitionKey: {
                 name: "pk",
@@ -32,7 +32,7 @@ export class OrdersAppStack extends cdk.Stack {
 
         //Orders Layer
         const ordersLayerArn = ssm.StringParameter
-        .valueForStringParameter(this, "OrdersLayerVersionArn")
+        .valueForStringParameter(this, "OrdersLayersVersionArn")
         const ordersLayer = lambda.LayerVersion
         .fromLayerVersionArn(this, "OrdersLayerVersionArn", ordersLayerArn)
 
@@ -59,7 +59,7 @@ export class OrdersAppStack extends cdk.Stack {
                 sourceMap: false
             },
             environment: {
-                PRODUCTS_DDB: props.productDdb.tableName,
+                PRODUCTS_DDB: props.productsDdb.tableName,
                 ORDERS_DDB: ordersDdb.tableName
             },
             layers: [ordersLayer, productsLayer, ordersApiLayer],
@@ -68,7 +68,7 @@ export class OrdersAppStack extends cdk.Stack {
         })
 
         ordersDdb.grantReadWriteData(this.ordersHandler)
-        props.productDdb.grantReadData(this.ordersHandler)
+        props.productsDdb.grantReadData(this.ordersHandler)
     }
 
 }
