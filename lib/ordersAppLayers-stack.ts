@@ -1,7 +1,11 @@
-import * as cdk from 'aws-cdk-lib'
-import { Construct } from 'constructs'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as lambdaNodeJS from 'aws-cdk-lib/aws-lambda-nodejs'
+import * as cdk from 'aws-cdk-lib'
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as ssm from 'aws-cdk-lib/aws-ssm'
+import * as sns from 'aws-cdk-lib/aws-sns'
+import * as subs from 'aws-cdk-lib/aws-sns-subscriptions'
+import { Construct } from 'constructs'
 
 export class OrdersAppLayersStack extends cdk.Stack {
     constructor( scope: Construct, id: string, props?: cdk.StackProps) {
@@ -17,6 +21,11 @@ export class OrdersAppLayersStack extends cdk.Stack {
         new ssm.StringParameter(this, 'OrdersLayersVersionArn', {
             parameterName: 'OrdersLayersVersionArn',
             stringValue: ordersLayer.layerVersionArn
+        })
+
+        const ordersTopic = new sns.Topic(this, "OrderEventsTopic", {
+            displayName: "Order events topic",
+            topicName: "order-events"
         })
 
         const ordersApiLayer = new lambda.LayerVersion(this, 'OrdersApiLayer', {
